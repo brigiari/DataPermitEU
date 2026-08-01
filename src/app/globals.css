@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+      sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-parchment-100 text-ink-900 antialiased;
+    font-family: var(--font-sans);
+  }
+
+  /* A single, high-contrast focus treatment used everywhere. Never removed. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-cyan-600 ring-offset-2 ring-offset-parchment-100 rounded-sm;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-ink-900 font-semibold tracking-tight;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-cyan-200 text-ink-950;
+  }
+
+  /* Keyboard users land here first. */
+  .skip-link {
+    @apply absolute left-4 top-4 z-50 -translate-y-24 rounded bg-ink-900 px-4 py-2 text-sm
+      font-medium text-parchment-50 transition-transform focus:translate-y-0;
+  }
+}
+
+@layer components {
+  .surface {
+    @apply rounded-lg border border-ink-200/70 bg-white shadow-card;
+  }
+
+  .surface-muted {
+    @apply rounded-lg border border-ink-200/70 bg-parchment-50;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-ink-800;
+  }
+
+  .hint {
+    @apply text-sm text-ink-500;
+  }
+
+  .input {
+    @apply w-full rounded border border-ink-300 bg-white px-3 py-2 text-[0.9375rem] text-ink-900
+      placeholder:text-ink-400 focus:border-cyan-600;
+  }
+
+  .prose-body {
+    @apply text-[0.9375rem] leading-relaxed text-ink-700;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-cyan-800;
+  }
+
+  /* Thin gold rule reserved for provenance and trust signals. */
+  .trust-rule {
+    @apply border-l-2 border-gold-400 pl-3;
+  }
+
+  .table-scroll {
+    @apply -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    @apply bg-white;
+  }
+  .surface,
+  .surface-muted {
+    box-shadow: none !important;
+    border-color: #c5d2e3 !important;
+    break-inside: avoid;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #385076;
+  }
+}
