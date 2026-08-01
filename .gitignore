@@ -1,49 +1,41 @@
-# History files
-.Rhistory
-.Rapp.history
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
 
-# Session Data files
-.RData
-.RDataTmp
+# testing
+/coverage
 
-# User-specific files
-.Ruserdata
+# next.js
+/.next/
+/out/
+next-env.d.ts
 
-# Example code in package build process
-*-Ex.R
+# production
+/build
 
-# Output files from R CMD build
-/*.tar.gz
+# misc
+.DS_Store
+*.pem
 
-# Output files from R CMD check
-/*.Rcheck/
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-# RStudio files
-.Rproj.user/
+# env files
+.env
+.env*.local
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# vercel
+.vercel
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
+# typescript
+*.tsbuildinfo
 
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
-
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
-
-# R Environment Variables
-.Renviron
-
-# pkgdown site
-docs/
-
-# translation temp files
-po/*~
-
-# RStudio Connect folder
-rsconnect/
+# editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
