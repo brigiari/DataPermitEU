@@ -298,6 +298,51 @@ describe("exports", () => {
   });
 });
 
+describe("demo content integrity", () => {
+  it("gives every audit entry a unique id across all demo projects", () => {
+    // React uses these as keys. A collision silently drops a row from the
+    // rendered trail, which is exactly the kind of failure an audit log
+    // must not have.
+    for (const project of [DEMO_PROJECT, DEMO_PROJECT_EARLY]) {
+      const ids = project.auditTrail.map((entry) => entry.id);
+      expect(new Set(ids).size).toBe(ids.length);
+    }
+  });
+
+  it("keeps audit ids unique when the two demo projects are combined", () => {
+    const ids = [...DEMO_PROJECT.auditTrail, ...DEMO_PROJECT_EARLY.auditTrail].map(
+      (entry) => entry.id,
+    );
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("gives every reviewer note a unique id", () => {
+    const ids = DEMO_PROJECT.reviewerNotes.map((note) => note.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("orders the demo audit trail chronologically", () => {
+    const times = DEMO_PROJECT.auditTrail.map((entry) => new Date(entry.timestamp).getTime());
+    expect(times).toEqual([...times].sort((a, b) => a - b));
+  });
+
+  it("references only datasets that exist in the catalogue", () => {
+    for (const project of [DEMO_PROJECT, DEMO_PROJECT_EARLY]) {
+      for (const id of project.datasetIds) expect(DATASETS_BY_ID[id]).toBeDefined();
+    }
+  });
+
+  it("requests only variables that exist on their dataset", () => {
+    for (const requested of DEMO_PROJECT.application.requestedVariables) {
+      const dataset = DATASETS_BY_ID[requested.datasetId];
+      expect(dataset).toBeDefined();
+      expect(
+        dataset.variables.some((variable) => variable.id === requested.variableId),
+      ).toBe(true);
+    }
+  });
+});
+
 describe("empty application defaults", () => {
   it("starts with no variables, no attestations and a full document checklist", () => {
     const application = emptyApplication();

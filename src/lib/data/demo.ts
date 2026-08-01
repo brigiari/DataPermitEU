@@ -70,11 +70,20 @@ export function newProject(id: string, title: string, researchQuestion: string, 
 const DEMO_CREATED = "2026-01-12T09:15:00.000Z";
 const DEMO_UPDATED = "2026-02-18T16:42:00.000Z";
 
+/**
+ * Ids must be unique across the whole demo trail, not merely within a day: the
+ * project adds two datasets on the same day with the same action, so day and
+ * action alone collide. A monotonic sequence makes collisions impossible
+ * regardless of what content is added later.
+ */
+let auditSequence = 0;
+
 function audit(offsetDays: number, actor: AuditEntry["actor"], action: string, detail: string): AuditEntry {
   const base = new Date(DEMO_CREATED).getTime();
   const timestamp = new Date(base + offsetDays * 86_400_000).toISOString();
+  auditSequence += 1;
   return {
-    id: `demo-audit-${offsetDays}-${action.toLowerCase().replace(/[^a-z]+/g, "-")}`,
+    id: `demo-audit-${auditSequence}-${offsetDays}-${action.toLowerCase().replace(/[^a-z]+/g, "-")}`,
     timestamp,
     actor,
     action,
